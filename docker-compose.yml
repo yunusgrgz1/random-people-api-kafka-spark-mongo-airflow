@@ -58,20 +58,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  java-17:
-    build:
-      context: ./java
-      dockerfile: Dockerfile
-    container_name: java-17
-    networks:
-      - confluent
-    command: ["java", "-version"]
-    depends_on:
-      - postgres
-    volumes:
-      - ./java:/opt/java
-    ports:
-      - "8081:8081"
+      
   schema-registry:
     image: confluentinc/cp-schema-registry:7.4.0
     hostname: schema-registry
@@ -122,12 +109,15 @@ services:
       retries: 5
 
   webserver:
-    image: apache/airflow:2.6.0-python3.9
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
     command: webserver
     entrypoint: ['/opt/airflow/script/entrypoint.sh']
     depends_on:
       - postgres
-      - java-17
     environment:
       - LOAD_EX=n
       - EXECUTOR=Local
@@ -156,11 +146,14 @@ services:
       - confluent
 
   scheduler:
-    image: apache/airflow:2.6.0-python3.9
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
     depends_on:
       - webserver  
-      - postgres   
-      - java-17    
+      - postgres    
     volumes:
       - ./dags:/opt/airflow/dags
       - ./data:/opt/airflow/data
@@ -177,6 +170,7 @@ services:
     command: bash -c "pip install -r ./requirements.txt && airflow db upgrade && airflow scheduler"
     networks:
       - confluent
+
 
   postgres:
     image: postgres:14.0
