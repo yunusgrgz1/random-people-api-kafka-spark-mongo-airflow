@@ -11,10 +11,12 @@ logger = logging.getLogger(__name__)
 
 
 # Spark session initialization
-spark = SparkSession.builder \
-    .appName("KafkaJsonConsumerToPostgre") \
-    .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0,org.apache.kafka:kafka-clients:3.3.0") \
-    .getOrCreate()
+def spark_session():
+    spark = SparkSession.builder \
+        .appName("KafkaJsonConsumerToPostgre") \
+        .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0,org.apache.kafka:kafka-clients:3.3.0") \
+        .getOrCreate()
+    return spark
 
 def batch_from_kafka(spark):
     """
@@ -189,7 +191,7 @@ def inserting_into_postgre(df):
             conn.rollback()
         raise
 
-def processing_data():
+def processing_data(spark):
     """
     Main function to setup and start the batch processing.
     """
