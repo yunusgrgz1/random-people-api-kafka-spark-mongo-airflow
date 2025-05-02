@@ -44,28 +44,28 @@ def start_job():
 
 def producing_data():
     try:
-        logging.info("Producing the Data...")
+        logger.info("Producing the Data...")
         fetch_and_produce()
     
     except Exception as e:
-        logging.error(f"An error occurred while producing people data: {e}")
+        logger.error(f"An error occurred while producing people data: {e}")
         raise
 
 
 def sending_data_to_s3():
-    logging.info("Sending raw data into s3.")
+    logger.info("Sending raw data into s3.")
     start_sending_to_s3()
 
 def sending_data_to_postgres():
-    logging.info("Sending people data into postgresql.")
+    logger.info("Sending people data into postgresql.")
     processing_data()
 
 def sending_data_to_mongo():
-    logging.info("Sending people data into mongo.")
+    logger.info("Sending people data into mongo.")
     processing_data_mongo()
 
 def end_data_job():
-    logging.info("Data processing pipeline finished.")
+    logger.info("Data processing pipeline finished.")
 
 
 start_task = PythonOperator(
