@@ -39,7 +39,7 @@ dag = DAG(
 )
 
 def start_job():
-    logging.info("Starting the people data processing pipeline.")
+    logger.info("Starting the people data processing pipeline.")
 
 
 def producing_data():
