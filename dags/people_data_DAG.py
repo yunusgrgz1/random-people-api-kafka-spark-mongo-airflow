@@ -33,7 +33,7 @@ default_args = {
 dag = DAG(
     dag_id="random_name_api_dag",
     default_args=default_args,
-    "catchup": False,
+    "catchup"= False,
     schedule_interval="*/5 * * * *",
     max_active_runs=1
 )
