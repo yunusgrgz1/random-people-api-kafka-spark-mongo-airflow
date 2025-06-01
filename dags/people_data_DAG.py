@@ -27,13 +27,13 @@ default_args = {
     "owner": "airflow",
     "retries": 3,
     "retry_delay": timedelta(minutes=5),
-    "start_date": datetime(2025,4,14),
-    "catchup": False
+    "start_date": datetime(2025,4,14)
 }
 
 dag = DAG(
     dag_id="random_name_api_dag",
     default_args=default_args,
+    "catchup": False,
     schedule_interval="*/5 * * * *",
     max_active_runs=1
 )
